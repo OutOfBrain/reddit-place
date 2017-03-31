@@ -53,13 +53,15 @@ function getConnectionUrl()
                 if ($response != null) {
                     $type = $response['type'];
 
-                    $payload = $response['payload'];
-                    $x = $payload['x'];
-                    $y = $payload['y'];
-                    $color = $payload['color'];
-                    $author = $payload['author'];
+                    if ($type == 'place') {
+                        $payload = $response['payload'];
+                        $x = $payload['x'];
+                        $y = $payload['y'];
+                        $color = $payload['color'];
+                        $author = $payload['author'];
 
-                    savePixel($x, $y, $color, $author);
+                        savePixel($x, $y, $color, $author);
+                    }
                 }
             }
         );
