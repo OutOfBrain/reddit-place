@@ -52,15 +52,28 @@ function getConnectionUrl()
 
                 if ($response != null) {
                     $type = $response['type'];
+                    $payload = $response['payload'];
 
-                    if ($type == 'place') {
-                        $payload = $response['payload'];
-                        $x = $payload['x'];
-                        $y = $payload['y'];
-                        $color = $payload['color'];
-                        $author = $payload['author'];
+                    switch ($type) {
+                        case 'place':
+                            $x = $payload['x'];
+                            $y = $payload['y'];
+                            $color = $payload['color'];
+                            $author = $payload['author'];
 
-                        savePixel($x, $y, $color, $author);
+                            savePixel($x, $y, $color, $author);
+                            break;
+
+                        case 'batch-place':
+                            foreach ($payload as $pixel) {
+                                $x = $pixel['x'];
+                                $y = $pixel['y'];
+                                $color = $pixel['color'];
+                                $author = $pixel['author'];
+
+                                savePixel($x, $y, $color, $author);
+                            }
+                            break;
                     }
                 }
             }
