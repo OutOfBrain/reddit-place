@@ -39,13 +39,20 @@ function savePixel($x, $y, $color, $author)
     function (Ratchet\Client\WebSocket $connection) {
         $connection->on(
             'message',
-            function ($msg) use ($connection) {
-                echo "Received: $msg\n";
-                $response = json_decode($msg, true);
+            function ($message) use ($connection) {
+                echo "Received: $message\n";
+                $response = json_decode($message, true);
 
                 if ($response != null) {
+                    $type = $response['type'];
+
                     $payload = $response['payload'];
-                    savePixel($payload['x'], $payload['y'], $payload['color'], $payload['author']);
+                    $x = $payload['x'];
+                    $y = $payload['y'];
+                    $color = $payload['color'];
+                    $author = $payload['author'];
+
+                    savePixel($x, $y, $color, $author);
                 }
             }
         );
