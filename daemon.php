@@ -1,7 +1,8 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-$url = trim(file_get_contents('connectionurl'));
+$url = getConnectionUrl();
+echo "found connection url $url\n";
 
 $db = new SQLite3('place.db');
 
@@ -26,14 +27,20 @@ function savePixel($x, $y, $color, $author)
     global $insertStatement;
 
     $insertStatement->bindValue(':timestamp', time());
-    $insertStatement->bindValue(':x', $x, PDO::PARAM_INT);
-    $insertStatement->bindValue(':y', $y, PDO::PARAM_INT);
-    $insertStatement->bindValue(':color', $color, PDO::PARAM_INT);
-    $insertStatement->bindValue(':author', $author, PDO::PARAM_STR);
+    $insertStatement->bindValue(':x', $x);
+    $insertStatement->bindValue(':y', $y);
+    $insertStatement->bindValue(':color', $color);
+    $insertStatement->bindValue(':author', $author);
 
     $insertStatement->execute();
 }
 
+function getConnectionUrl()
+{
+    $placeContent = file_get_contents("http://reddit.com/r/place");
+    preg_match('/(wss:.*?)"/', $placeContent, $matches);
+    return $matches[1];
+}
 
 \Ratchet\Client\connect($url)->then(
     function (Ratchet\Client\WebSocket $connection) {
