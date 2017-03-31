@@ -1,0 +1,20 @@
+
+{
+  "name": "tcial/theplace",
+  "description": "the place storage",
+  "minimum-stability": "stable",
+  "authors": [
+    {
+      "name": "OutOfBrain",
+      "email": "outofbrain@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "": "src"
+    }
+  },
+  "require": {
+    "ratchet/pawl": "v0.2.3"
+  }
+}
